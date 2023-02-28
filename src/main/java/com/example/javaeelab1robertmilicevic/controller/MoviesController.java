@@ -3,30 +3,38 @@ package com.example.javaeelab1robertmilicevic.controller;
 import com.example.javaeelab1robertmilicevic.entity.Movie;
 import com.example.javaeelab1robertmilicevic.repository.MovieRepository;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/foods")
+@Path("/movies")
 public class MoviesController {
 
     @Inject
     MovieRepository repository;
 
     @GET
-    public Response getAllFoods(){
-        return Response.ok().entity("Hello World").header("CustomHeader","MyValue").build();
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Movie> getAll() {
+
+        return repository.findAll();
     }
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<Movie>filter(@QueryParam("name") String name, @QueryParam("id") long id) {
-//        if (name == null)
-//            return repository.findAll();
-//
-//        return repository.findAllByName(name);
-//    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOne(@PathParam("id") Long id) {
+        var movie = repository.findOne(id);
+        if (movie.isPresent())
+            return Response.ok().entity(movie.get()).build();
+        return Response.status(404).build();
+    }
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public void addOne(Movie movie){
+
+    }
 }

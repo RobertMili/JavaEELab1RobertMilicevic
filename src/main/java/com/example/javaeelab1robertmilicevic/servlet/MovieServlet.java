@@ -29,6 +29,9 @@ public class MovieServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
+        // Get path
         String path = req.getPathInfo();
 
         if (path == null || path.equals("/")) {
@@ -37,19 +40,19 @@ public class MovieServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             out.println("<html><body>");
 
-            out.println("<h1>" + "Movies" + "</h1>");
+            out.println("<h1>" + " Movies " + "</h1>");
             out.println("<h1>" + path + "</h1>");
 
-            for (Movie movies : repository.findAll())
-                out.println("<div>" + movies.getId() + " : " + movies.getName() + "</div>");
+            for (Movie movie : repository.findAll())
+                out.println("<div>" + movie.getId() + " : " + movie.getName() + "</div>");
             out.println("</body></html>");
         } else {
             long id = Long.parseLong(path.substring(1));
-            var movies = repository.findOne(id);
+            var movie = repository.findOne(id);
             resp.setContentType("application/json");
-            if (movies.isPresent()) {
+            if (movie.isPresent()) {
                 PrintWriter out = resp.getWriter();
-                out.println(jsonb.toJson(movies));
+                out.println(jsonb.toJson(movie));
 
             } else {
                 resp.setContentType("text/html");
@@ -57,20 +60,22 @@ public class MovieServlet extends HttpServlet {
             }
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
         StringBuffer jb = new StringBuffer();
-
         String line = null;
-
         try {
             BufferedReader reader = req.getReader();
             while ((line = reader.readLine()) != null)
-            jb.append(line);
-        } catch (Exception e) {
-            Movie movie = jsonb.fromJson(jb.toString(),Movie.class);
+                jb.append(line);
+        } catch (Exception e) { /*report an error*/ }
 
-            repository.insertFood(movie);
+        Movie movie = jsonb.fromJson(jb.toString(), Movie.class);
+
+        repository.insertFood(movie);
         }
     }
-}
+
