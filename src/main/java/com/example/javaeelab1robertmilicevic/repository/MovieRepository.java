@@ -24,7 +24,7 @@ public class MovieRepository {
     public Optional<Movie> findOne(Long id){
         return Optional.ofNullable(entityManager.find(Movie.class, id));
     }
-    public void insertFood(Movie movie){
+    public void insertMovie(Movie movie){
         entityManager.persist(movie);
     }
 

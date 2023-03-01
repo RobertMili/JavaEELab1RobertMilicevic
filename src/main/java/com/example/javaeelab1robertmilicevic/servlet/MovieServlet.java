@@ -30,7 +30,6 @@ public class MovieServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
         // Get path
         String path = req.getPathInfo();
 
@@ -75,7 +74,7 @@ public class MovieServlet extends HttpServlet {
 
         Movie movie = jsonb.fromJson(jb.toString(), Movie.class);
 
-        repository.insertFood(movie);
+        repository.insertMovie(movie);
         }
     }
 

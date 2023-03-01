@@ -14,7 +14,7 @@ public class Movie {
     private Long id;
 
     @NotNull(message = "name cant be null")
-    @Size(min = 2)
+    @Size(min = 2,max = 10000)
     String name;
 
     public Long getId() {

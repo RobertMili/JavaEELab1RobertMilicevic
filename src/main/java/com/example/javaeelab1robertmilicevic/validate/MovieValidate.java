@@ -6,6 +6,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class MovieValidate {
     public boolean validate(Movie movie) {
-        return true;
+        return movie.getName() != null && !movie.getName().isEmpty();
     }
 }
