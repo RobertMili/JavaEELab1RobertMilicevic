@@ -1,5 +1,6 @@
 package com.example.javaeelab1robertmilicevic.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,17 @@ public class Movie {
     @NotNull(message = "name cant be null")
     @Size(min = 2,max = 10000)
     String name;
+
+    @JsonbTransient
+    String secretMovie = "This shouldn't be visible";
+
+    public String getSecretMovie() {
+        return secretMovie;
+    }
+
+    public void setSecretMovie(String secretMovie) {
+        this.secretMovie = secretMovie;
+    }
 
     public Long getId() {
         return id;

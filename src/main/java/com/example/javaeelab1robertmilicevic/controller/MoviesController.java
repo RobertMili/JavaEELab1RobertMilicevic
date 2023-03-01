@@ -1,5 +1,6 @@
 package com.example.javaeelab1robertmilicevic.controller;
 
+import com.example.javaeelab1robertmilicevic.dto.MovieDto;
 import com.example.javaeelab1robertmilicevic.entity.Movie;
 import com.example.javaeelab1robertmilicevic.repository.MovieRepository;
 import com.example.javaeelab1robertmilicevic.validate.MovieValidate;
@@ -19,15 +20,16 @@ public class MoviesController {
     @Inject
     MovieRepository repository;
 
-    @Inject
-    MovieValidate validate;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> getAll(@QueryParam("name") String name, @QueryParam("id") long id) {
+    public List<MovieDto> getAll(@QueryParam("name") String name) {
         if (name == null)
-            return repository.findAll();
-        return repository.findAllByName(name);
+            return map(repository.findAll());
+        return map(repository.findAllByName(name));
+    }
+
+    private List<MovieDto> map(List<Movie> all) {
+       return all.stream().map(movie -> new MovieDto(movie.getId(), movie.getName())).toList();
     }
 
     @GET
@@ -42,7 +44,7 @@ public class MoviesController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addOne(@Valid Movie movie) {
+    public Response addOne(@Valid MovieDto movie) {
 
         repository.insertMovie(movie);
         return Response.created(URI.create("/movies/" + movie.getId())).build();
