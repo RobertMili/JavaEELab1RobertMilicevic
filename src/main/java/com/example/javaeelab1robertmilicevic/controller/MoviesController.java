@@ -15,6 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @Path("/movies")
+@Produces(MediaType.APPLICATION_JSON)
 public class MoviesController {
 
     @Inject
@@ -23,16 +24,15 @@ public class MoviesController {
     Mapper mapper;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public List<MovieDto> getAll(@QueryParam("name") String name) {
         if (name == null)
             return mapper.map(repository.findAll());
+
         return mapper.map(repository.findAllByName(name));
     }
 
     @GET
     @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam("id") Long id) {
         var movie = repository.findOne(id);
         if (movie.isPresent())
@@ -54,15 +54,10 @@ public class MoviesController {
         repository.deleteMovies(id);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Movie> filter(@QueryParam("name") String name) {
-        return repository.findAll().stream().filter(e -> e.getName().equals(name)).toList();
-    }
+
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response update (@PathParam("id") Long id, MovieDto movie) {
         return Response.ok().entity(mapper.map(repository.update(id, mapper.map(movie)))).build();
     }

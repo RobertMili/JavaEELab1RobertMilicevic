@@ -17,9 +17,11 @@ public class MovieRepository {
     @PersistenceContext
     EntityManager entityManager;
 
+
+
     public List<Movie> findAll() {
         var query = entityManager.createQuery("select m from Movie m");
-        return  (List<Movie>) query.getResultList();
+        return query.getResultList();
     }
     public Optional<Movie> findOne(Long id){
         return Optional.ofNullable(entityManager.find(Movie.class, id));
