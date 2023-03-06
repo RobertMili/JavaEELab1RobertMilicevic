@@ -2,9 +2,8 @@ package com.example.javaeelab1robertmilicevic.controller;
 
 import com.example.javaeelab1robertmilicevic.dto.MovieDto;
 import com.example.javaeelab1robertmilicevic.entity.Movie;
+import com.example.javaeelab1robertmilicevic.mapper.Mapper;
 import com.example.javaeelab1robertmilicevic.repository.MovieRepository;
-import com.example.javaeelab1robertmilicevic.validate.MovieValidate;
-import jakarta.enterprise.inject.build.compatible.spi.Validation;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -19,17 +18,15 @@ public class MoviesController {
 
     @Inject
     MovieRepository repository;
+    @Inject
+    Mapper mapper;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<MovieDto> getAll(@QueryParam("name") String name) {
         if (name == null)
-            return map(repository.findAll());
-        return map(repository.findAllByName(name));
-    }
-
-    private List<MovieDto> map(List<Movie> all) {
-       return all.stream().map(movie -> new MovieDto(movie.getId(), movie.getName())).toList();
+            return mapper.map(repository.findAll());
+        return mapper.map(repository.findAllByName(name));
     }
 
     @GET
@@ -44,7 +41,7 @@ public class MoviesController {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addOne(@Valid MovieDto movie) {
+    public Response addOne(@Valid Movie movie) {
 
         repository.insertMovie(movie);
         return Response.created(URI.create("/movies/" + movie.getId())).build();
