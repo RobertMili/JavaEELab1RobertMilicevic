@@ -44,8 +44,9 @@ public class Movie {
         return name;
     }
 
-    public void setName(String name) {
+    public Movie setName(String name) {
         this.name = name;
+        return null;
     }
 
     public BigDecimal getPrice() {
@@ -55,4 +56,23 @@ public class Movie {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", secretMovie='" + secretMovie + '\'' +
+                ", price=" + price +
+                '}';
+    }
+    public Movie(String name, BigDecimal price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public Movie() {
+    }
+
 }
