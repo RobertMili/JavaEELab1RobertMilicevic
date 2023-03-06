@@ -24,7 +24,6 @@ public class Movie {
     String secretMovie = "This shouldn't be visible";
     BigDecimal price;
 
-
     public String getSecretMovie() {
         return secretMovie;
     }

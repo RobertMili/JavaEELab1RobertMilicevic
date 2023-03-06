@@ -18,7 +18,6 @@ public class MovieDto {
         this.price = movie.getPrice();
 
     }
-
     public Long getId() {
         return id;
     }
