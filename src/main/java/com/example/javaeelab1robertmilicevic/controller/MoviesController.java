@@ -2,6 +2,7 @@ package com.example.javaeelab1robertmilicevic.controller;
 
 import com.example.javaeelab1robertmilicevic.dto.MovieDto;
 import com.example.javaeelab1robertmilicevic.entity.Movie;
+import com.example.javaeelab1robertmilicevic.exception.IdNotFoundException;
 import com.example.javaeelab1robertmilicevic.mapper.Mapper;
 import com.example.javaeelab1robertmilicevic.repository.MovieRepository;
 import jakarta.inject.Inject;
@@ -36,7 +37,7 @@ public class MoviesController {
         var movie = repository.findOne(id);
         if (movie.isPresent())
             return Response.ok().entity(movie.get()).build();
-        return Response.status(404).build();
+        throw new IdNotFoundException("Not found ID: " + id);
     }
 
     @POST
