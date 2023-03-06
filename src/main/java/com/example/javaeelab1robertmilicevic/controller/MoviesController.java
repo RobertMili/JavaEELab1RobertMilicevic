@@ -59,4 +59,11 @@ public class MoviesController {
     public List<Movie> filter(@QueryParam("name") String name) {
         return repository.findAll().stream().filter(e -> e.getName().equals(name)).toList();
     }
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update (@PathParam("id") Long id, MovieDto movie) {
+        return Response.ok().entity(mapper.map(repository.update(id, mapper.map(movie)))).build();
+    }
 }

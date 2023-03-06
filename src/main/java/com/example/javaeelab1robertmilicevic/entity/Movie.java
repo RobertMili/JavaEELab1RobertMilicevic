@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Movie {
     @Id
@@ -15,11 +17,13 @@ public class Movie {
     private Long id;
 
     @NotNull(message = "name cant be null")
-    @Size(min = 2,max = 10000)
+    @Size(min = 2, max = 10000)
     String name;
 
     @JsonbTransient
     String secretMovie = "This shouldn't be visible";
+    BigDecimal price;
+
 
     public String getSecretMovie() {
         return secretMovie;
@@ -43,5 +47,13 @@ public class Movie {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

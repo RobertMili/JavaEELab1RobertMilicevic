@@ -32,9 +32,17 @@ public class MovieRepository {
         var movie = findOne(id);
         movie.ifPresent((m) -> entityManager.remove(m));
     }
+    public Movie update (Long id, Movie movie) {
+        var entity = entityManager.find(Movie.class, id);
+        entity.setName(movie.getName());
+        entity.setPrice(movie.getPrice());
+        entityManager.persist(entity);
+        return entity;
+    }
     public List<Movie> findAllByName(String name) {
         var query = entityManager.createQuery("select m from Movie m where m.name like :name");
         query.setParameter("name",name);
         return (List<Movie>) query.getResultList();
     }
+
 }
