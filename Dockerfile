@@ -12,10 +12,9 @@ ENV WILDFLY_CLI /opt/jboss/wildfly/bin/jboss-cli.sh
 ENV WILDFLY_HOME /opt/jboss/wildfly
 ENV WILDFLY_USER admin
 ENV WILDFLY_PASS password
-ARG DB_USER
-ARG DB_PASS
+ENV DB_USER developer
+ENV DB_PASS password
 ENV DB_URI host.docker.internal:3306
-ENV DB_NAME demo
 
 RUN $WILDFLY_HOME/bin/add-user.sh --silent=true $WILDFLY_USER $WILDFLY_PASS ManagementRealm
 #Start wildfly
@@ -23,9 +22,7 @@ RUN bash -c '/opt/jboss/wildfly/bin/standalone.sh &' && \
 bash -c 'until `$WILDFLY_CLI -c ":read-attribute(name=server-state)" 2> /dev/null | grep -q running`; do echo `$WILDFLY_CLI -c ":read-attribute(name=server-state)" 2> /dev/null`; sleep 1; done'
 
 #Download mysql jar driver file
-#in my local is :
-#--name=/MySQLDS \
- #--jndi-name=java:/MySQLDS \
+
 RUN bash -c '$WILDFLY_HOME/bin/standalone.sh &' && \
       bash -c 'until `$WILDFLY_CLI -c ":read-attribute(name=server-state)" 2> /dev/null | grep -q running`; do echo `$WILDFLY_CLI -c ":read-attribute(name=server-state)" 2> /dev/null`; sleep 1; done' && \
       curl --location --output /tmp/mysql-connector-j-8.0.32.jar --url https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.32/mysql-connector-j-8.0.32.jar && \
